@@ -1,57 +1,148 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const inventory = [
-  { id: '1', year: 2020, make: 'Chevrolet', model: 'Silverado DRW LT', vin: '123456', price: '$34,000', status: 'Active' },
-  { id: '2', year: 2020, make: 'Chevrolet', model: 'Silverado DRW LT', vin: '654321', price: '$32,000', status: 'Active' },
+const vehicles = [
+  {
+    id: '1',
+    title: '2009 Chevrolet Silverado DRW LT',
+    image: require('../assets/images/vehicle.png'), // Changed to local asset
+    price: '$16,800',
+    mileage: '35,241 mi',
+    distance: '56 mi',
+    tag: 'Accepting Offers',
+    description: 'Single owner, no accidents, Carfax avail.',
+  },
+  {
+    id: '2',
+    title: '2009 Chevrolet Silverado DRW LT',
+    image: require('../assets/images/vehicle.png'), // Changed to local asset
+    price: '$17,200',
+    mileage: '36,241 mi',
+    distance: '56 mi',
+    tag: 'Accepting Offers',
+    description: 'Single owner, no accidents, Carfax avail.',
+  },
 ];
 
-export default function ManageInventoryScreen() {
+const ManageInventoryScreen = () => {
   const router = useRouter();
   return (
     <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>Manage Inventory</Text>
-        <TouchableOpacity style={styles.logoutButton} onPress={() => router.replace('/login')}>
-          <Text style={styles.logoutText}>Logout</Text>
+      <Text style={styles.header}>Buy</Text>
+
+      <TextInput style={styles.searchInput} placeholder="Search by Make, Model or VIN" />
+
+      <View style={styles.filterRow}>
+        <Text style={styles.filterTag}>Toyota</Text>
+        <Text style={styles.filterTag}>Chevy</Text>
+        <Text style={styles.filterTag}>Within 150 miles</Text>
+      </View>
+
+      <View style={styles.sortContainer}>
+        <Text>Sort by:</Text>
+        <TouchableOpacity>
+          <Text style={styles.sortText}>Distance ▼</Text>
         </TouchableOpacity>
       </View>
-      <TextInput style={styles.search} placeholder="Search by VIN or Stock ID" />
+
       <FlatList
-        data={inventory}
-        keyExtractor={item => item.id}
+        data={vehicles}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.itemText}>{item.year} {item.make} {item.model}</Text>
-            <Text style={styles.itemSub}>{item.vin} | {item.price}</Text>
-            <View style={styles.rowBetween}>
-              <Text style={styles.status}>{item.status}</Text>
+          <View style={styles.card}>
+            <Image source={item.image} style={styles.image} />
+            <View style={styles.info}>
               <TouchableOpacity onPress={() => router.push('/vehicle-details')}>
-                <Text style={styles.link}>View Details</Text>
+                <Text style={styles.title}>{item.title}</Text>
               </TouchableOpacity>
+              <Text style={styles.details}>{item.price} • {item.mileage}</Text>
+              <Text style={styles.details}>{item.distance} away</Text>
+              <Text style={styles.tag}>{item.tag}</Text>
+              <Text style={styles.description}>{item.description}</Text>
             </View>
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.emptyText}>No inventory found.</Text>}
-        contentContainerStyle={{ paddingBottom: 24 }}
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#F6F6F6' },
-  title: { fontSize: 26, fontWeight: 'bold', color: '#222', marginBottom: 8 },
-  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 },
-  logoutButton: { padding: 8, paddingHorizontal: 12, backgroundColor: '#eee', borderRadius: 8 },
-  logoutText: { color: '#d00', fontWeight: 'bold' },
-  search: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 16, fontSize: 16, backgroundColor: '#fff' },
-  item: { padding: 16, borderRadius: 12, backgroundColor: '#fff', marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
-  itemText: { fontSize: 18, fontWeight: 'bold', color: '#222' },
-  itemSub: { color: '#555', marginBottom: 6 },
-  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  status: { color: 'green', fontWeight: 'bold', fontSize: 15 },
-  link: { color: '#007AFF', fontWeight: 'bold', fontSize: 15 },
-  emptyText: { textAlign: 'center', color: '#888', marginTop: 32, fontSize: 16 },
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#4B0082',
+    marginBottom: 12,
+  },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 8,
+  },
+  filterRow: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  filterTag: {
+    marginRight: 8,
+    backgroundColor: '#e0e0e0',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  sortContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  sortText: {
+    fontWeight: '600',
+    color: '#0000CD',
+  },
+  card: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 12,
+  },
+  image: {
+    width: 90,
+    height: 90,
+    borderRadius: 8,
+    marginRight: 10,
+  },
+  info: {
+    flex: 1,
+  },
+  title: {
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  details: {
+    fontSize: 12,
+    color: '#333',
+  },
+  tag: {
+    fontSize: 12,
+    color: 'green',
+    fontWeight: '600',
+    marginTop: 4,
+  },
+  description: {
+    fontSize: 12,
+    color: '#555',
+    marginTop: 4,
+  },
 });
+
+export default ManageInventoryScreen;
