@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function RespondToOffersScreen() {
   const [offer, setOffer] = useState('18200');
@@ -14,9 +14,9 @@ export default function RespondToOffersScreen() {
           <Text style={styles.offerAmount}>$18,200</Text>
         </View>
         <View style={styles.buttonRow}>
-          <View style={styles.buttonWrap}><Button title="Decline" color="#B0B0B0" onPress={() => {}} /></View>
-          <View style={styles.buttonWrap}><Button title="Counter" color="#FFD600" onPress={() => {}} /></View>
-          <View style={styles.buttonWrap}><Button title="Accept Offer" color="#007AFF" onPress={() => {}} /></View>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#B0B0B0' }]}><Text style={styles.actionButtonText}>Decline</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#FFD600' }]}><Text style={styles.actionButtonText}>Counter</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#007AFF' }]}><Text style={styles.actionButtonText}>Accept Offer</Text></TouchableOpacity>
         </View>
         <Text style={styles.infoText}>This would be your best offer given the proposals. If not ideal, you can counter below.</Text>
         <View style={styles.rowBetween}>
@@ -24,9 +24,9 @@ export default function RespondToOffersScreen() {
           <TextInput style={styles.input} value={counter} onChangeText={setCounter} placeholder="Enter counter offer" keyboardType="numeric" />
         </View>
         <View style={styles.buttonRow}>
-          <View style={styles.buttonWrap}><Button title="Decline" color="#B0B0B0" onPress={() => {}} /></View>
-          <View style={styles.buttonWrap}><Button title="Counter" color="#FFD600" onPress={() => {}} /></View>
-          <View style={styles.buttonWrap}><Button title="Accept Offer" color="#007AFF" onPress={() => {}} /></View>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#B0B0B0' }]}><Text style={styles.actionButtonText}>Decline</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#FFD600' }]}><Text style={styles.actionButtonText}>Counter</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#007AFF' }]}><Text style={styles.actionButtonText}>Accept Offer</Text></TouchableOpacity>
         </View>
       </View>
     </View>
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   offerAmount: { fontSize: 18, fontWeight: 'bold', color: '#222' },
   input: { borderWidth: 1, borderColor: '#E0E0E0', borderRadius: 8, padding: 8, width: 120, backgroundColor: '#FAFAFA', textAlign: 'right' },
   buttonRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 },
-  buttonWrap: { flex: 1, marginHorizontal: 4 },
+  actionButton: { flex: 1, marginHorizontal: 4, borderRadius: 8, paddingVertical: 10, alignItems: 'center' },
+  actionButtonText: { color: '#222', fontWeight: 'bold', fontSize: 15 },
   infoText: { color: '#666', fontSize: 13, marginVertical: 10, textAlign: 'center' },
 });

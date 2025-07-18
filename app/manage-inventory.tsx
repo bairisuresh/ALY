@@ -25,25 +25,33 @@ export default function ManageInventoryScreen() {
           <View style={styles.item}>
             <Text style={styles.itemText}>{item.year} {item.make} {item.model}</Text>
             <Text style={styles.itemSub}>{item.vin} | {item.price}</Text>
-            <Text style={styles.status}>{item.status}</Text>
-            <Text style={styles.link} onPress={() => router.push('/vehicle-details')}>View Details</Text>
+            <View style={styles.rowBetween}>
+              <Text style={styles.status}>{item.status}</Text>
+              <TouchableOpacity onPress={() => router.push('/vehicle-details')}>
+                <Text style={styles.link}>View Details</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
+        ListEmptyComponent={<Text style={styles.emptyText}>No inventory found.</Text>}
+        contentContainerStyle={{ paddingBottom: 24 }}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
+  container: { flex: 1, padding: 16, backgroundColor: '#F6F6F6' },
+  title: { fontSize: 26, fontWeight: 'bold', color: '#222', marginBottom: 8 },
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 },
   logoutButton: { padding: 8, paddingHorizontal: 12, backgroundColor: '#eee', borderRadius: 8 },
   logoutText: { color: '#d00', fontWeight: 'bold' },
-  search: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 8, marginBottom: 16 },
-  item: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#eee' },
-  itemText: { fontSize: 18, fontWeight: 'bold' },
-  itemSub: { color: '#555' },
-  status: { color: 'green', fontWeight: 'bold' },
-  link: { color: '#007AFF', marginTop: 8 },
+  search: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 16, fontSize: 16, backgroundColor: '#fff' },
+  item: { padding: 16, borderRadius: 12, backgroundColor: '#fff', marginBottom: 12, shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
+  itemText: { fontSize: 18, fontWeight: 'bold', color: '#222' },
+  itemSub: { color: '#555', marginBottom: 6 },
+  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  status: { color: 'green', fontWeight: 'bold', fontSize: 15 },
+  link: { color: '#007AFF', fontWeight: 'bold', fontSize: 15 },
+  emptyText: { textAlign: 'center', color: '#888', marginTop: 32, fontSize: 16 },
 });
