@@ -1,3 +1,4 @@
+import { Feather, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -19,44 +20,109 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to SmartAuction</Text>
-      <View style={styles.form}>
-        <Text style={styles.label}>Username</Text>
+      <Text style={styles.title}>SmartAuction</Text>
+
+      <View style={styles.inputGroup}>
+        <FontAwesome name="user" size={20} color="#666" style={styles.icon} />
         <TextInput
           style={styles.input}
-          placeholder="Enter your username"
           value={username}
           onChangeText={setUsername}
+          placeholder="Username"
           autoCapitalize="none"
         />
-        <Text style={styles.label}>Password</Text>
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Feather name="lock" size={20} color="#666" style={styles.icon} />
         <TextInput
-          style={styles.input}
-          placeholder="Enter your password"
+          style={[styles.input, { flex: 1 }]}
           value={password}
           onChangeText={setPassword}
+          placeholder="Password"
           secureTextEntry
         />
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Login</Text>
+        <TouchableOpacity onPress={() => console.log('Face ID pressed')}>
+          <Ionicons name="ios-face-id" size={24} color="#666" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.link}><Text style={styles.linkText}>Forgot username or password?</Text></TouchableOpacity>
-        <TouchableOpacity style={styles.link}><Text style={styles.linkText}>New to SmartAuction? Enroll Now</Text></TouchableOpacity>
       </View>
+
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <Text style={styles.loginButtonText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Text style={styles.link}>Forgot <Text style={styles.boldLink}>username</Text> or <Text style={styles.boldLink}>password</Text>?</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{ marginTop: 24 }}>
+        <Text style={styles.link}>New to SmartAuction? <Text style={styles.boldLink}>Enroll Now</Text></Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F6F6F6' },
-  title: { fontWeight: '700', fontSize: 28, marginBottom: 24, color: '#222', letterSpacing: 0.5 },
-  form: { width: '90%', maxWidth: 340, backgroundColor: '#fff', borderRadius: 16, padding: 24, shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },
-  label: { fontSize: 15, color: '#555', marginBottom: 4, marginLeft: 2 },
-  input: { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', marginBottom: 16, fontSize: 16, backgroundColor: '#F9F9F9' },
-  error: { color: 'red', marginBottom: 8, fontSize: 14, textAlign: 'center' },
-  loginButton: { backgroundColor: '#007AFF', borderRadius: 8, paddingVertical: 12, alignItems: 'center', marginBottom: 10, marginTop: 8 },
-  loginButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
-  link: { marginTop: 8, alignItems: 'center' },
-  linkText: { color: '#007AFF', fontSize: 15 },
+  container: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#222',
+    marginBottom: 32,
+  },
+  inputGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: 320,
+    backgroundColor: '#F0F0F0',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    marginBottom: 16,
+  },
+  icon: {
+    marginRight: 8,
+  },
+  input: {
+    height: 50,
+    fontSize: 16,
+  },
+  loginButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    width: '100%',
+    maxWidth: 320,
+    alignItems: 'center',
+    marginVertical: 12,
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  link: {
+    color: '#555',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  boldLink: {
+    color: '#007AFF',
+    fontWeight: '600',
+  },
+  error: {
+    color: 'red',
+    marginBottom: 8,
+    fontSize: 14,
+    textAlign: 'center',
+  },
 });
