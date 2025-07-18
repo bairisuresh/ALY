@@ -1,9 +1,9 @@
+import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
   FlatList,
   Image,
-  Picker,
   Platform,
   StyleSheet,
   Text,

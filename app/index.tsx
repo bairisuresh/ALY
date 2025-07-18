@@ -1,4 +1,4 @@
-import { Feather, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Feather, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -43,7 +43,7 @@ export default function LoginScreen() {
           secureTextEntry
         />
         <TouchableOpacity onPress={() => console.log('Face ID pressed')}>
-          <Ionicons name="ios-face-id" size={24} color="#666" />
+          <MaterialCommunityIcons name="face-recognition" size={24} color="#666" />
         </TouchableOpacity>
       </View>
 
