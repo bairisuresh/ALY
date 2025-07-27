@@ -32,6 +32,7 @@ interface InventoryItem {
   description?: string;
   views?: number;
   likes?: number;
+  images: string[];
 }
 
 const ManageInventoryScreen = () => {
@@ -62,6 +63,13 @@ const ManageInventoryScreen = () => {
       hasDescription: false,
       views: 34,
       likes: 2,
+      images: [
+        'https://source.unsplash.com/featured/?chevrolet,silverado,front',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,side',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,back',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,interior',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,engine',
+      ],
     },
     {
       id: '2',
@@ -83,6 +91,13 @@ const ManageInventoryScreen = () => {
         'Great value, will need minor body work for the scratch and dent repair. Will bid at auction. Need to lookup VIN for future title issues and accidents.',
       views: 34,
       likes: 2,
+      images: [
+        'https://source.unsplash.com/featured/?chevrolet,silverado,front',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,side',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,back',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,interior',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,engine',
+      ],
     },
     {
       id: '3',
@@ -102,6 +117,13 @@ const ManageInventoryScreen = () => {
       hasDescription: false,
       views: 34,
       likes: 2,
+      images: [
+        'https://source.unsplash.com/featured/?chevrolet,silverado,front',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,side',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,back',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,interior',
+        'https://source.unsplash.com/featured/?chevrolet,silverado,engine',
+      ],
     },
     {
       id: '4',
@@ -121,6 +143,13 @@ const ManageInventoryScreen = () => {
       hasDescription: false,
       views: 34,
       likes: 2,
+      images: [
+        'https://source.unsplash.com/featured/?ford,f150,front',
+        'https://source.unsplash.com/featured/?ford,f150,side',
+        'https://source.unsplash.com/featured/?ford,f150,back',
+        'https://source.unsplash.com/featured/?ford,f150,interior',
+        'https://source.unsplash.com/featured/?ford,f150,engine',
+      ],
     },
     {
       id: '5',
@@ -141,6 +170,13 @@ const ManageInventoryScreen = () => {
       description: 'Low mileage, single owner, well maintained.',
       views: 34,
       likes: 2,
+      images: [
+        'https://source.unsplash.com/featured/?toyota,camry,front',
+        'https://source.unsplash.com/featured/?toyota,camry,side',
+        'https://source.unsplash.com/featured/?toyota,camry,back',
+        'https://source.unsplash.com/featured/?toyota,camry,interior',
+        'https://source.unsplash.com/featured/?toyota,camry,engine',
+      ],
     },
     {
       id: '6',
@@ -160,6 +196,13 @@ const ManageInventoryScreen = () => {
       hasDescription: false,
       views: 34,
       likes: 2,
+      images: [
+        'https://source.unsplash.com/featured/?honda,civic,front',
+        'https://source.unsplash.com/featured/?honda,civic,side',
+        'https://source.unsplash.com/featured/?honda,civic,back',
+        'https://source.unsplash.com/featured/?honda,civic,interior',
+        'https://source.unsplash.com/featured/?honda,civic,engine',
+      ],
     },
     {
       id: '7',
@@ -180,6 +223,13 @@ const ManageInventoryScreen = () => {
       description: 'Like new, autopilot included.',
       views: 34,
       likes: 2,
+      images: [
+        'https://source.unsplash.com/featured/?tesla,model3,front',
+        'https://source.unsplash.com/featured/?tesla,model3,side',
+        'https://source.unsplash.com/featured/?tesla,model3,back',
+        'https://source.unsplash.com/featured/?tesla,model3,interior',
+        'https://source.unsplash.com/featured/?tesla,model3,engine',
+      ],
     },
     {
       id: '8',
@@ -199,6 +249,13 @@ const ManageInventoryScreen = () => {
       hasDescription: false,
       views: 34,
       likes: 2,
+      images: [
+        'https://source.unsplash.com/featured/?bmw,x5,front',
+        'https://source.unsplash.com/featured/?bmw,x5,side',
+        'https://source.unsplash.com/featured/?bmw,x5,back',
+        'https://source.unsplash.com/featured/?bmw,x5,interior',
+        'https://source.unsplash.com/featured/?bmw,x5,engine',
+      ],
     },
   ]);
 
@@ -211,7 +268,7 @@ const ManageInventoryScreen = () => {
   });
 
   const handleItemPress = (item: InventoryItem) => {
-    router.push({ pathname: '/vehicle-details', params: { id: item.id, vehicle: JSON.stringify(item) } });
+    router.push({ pathname: '/vehicle-details', params: { id: item.id, vehicle: JSON.stringify(item), images: JSON.stringify(item.images) } });
   };
 
   return (

@@ -2,6 +2,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import {
     Alert,
+    Dimensions,
+    Image,
     SafeAreaView,
     ScrollView,
     StyleSheet,
@@ -72,6 +74,17 @@ const VehicleDetailsScreen = () => {
         Alert.alert('Edit Comment', 'Comment editing functionality will be implemented here.');
     };
 
+    // Get images from params or vehicleDetails
+    let images: string[] = [];
+    if (params.images) {
+        const imagesParam = Array.isArray(params.images) ? params.images[0] : params.images;
+        images = JSON.parse(imagesParam);
+    } else if (vehicleDetails.images) {
+        images = vehicleDetails.images;
+    }
+    const [currentImage, setCurrentImage] = React.useState(0);
+    const screenWidth = Dimensions.get('window').width;
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
@@ -95,16 +108,54 @@ const VehicleDetailsScreen = () => {
                     </View>
                 )}
 
-                {/* Vehicle Image */}
+                {/* Vehicle Image Carousel */}
                 <View style={styles.imageContainer}>
-                    <View style={styles.imagePlaceholder}>
-                        <Text style={styles.imageText}>🚗</Text>
-                    </View>
-                    <View style={styles.photoCounter}>
-                        <Text style={styles.photoCounterText}>
-                            {vehicleDetails.currentPhoto || 1} of {vehicleDetails.photoCount || 1}
-                        </Text>
-                    </View>
+                    {images && images.length > 0 ? (
+                        <>
+                            <Image
+                                source={{ uri: images[currentImage] }}
+                                style={{ width: screenWidth, height: 300, resizeMode: 'cover' }}
+                            />
+                            <View style={styles.photoCounter}>
+                                <Text style={styles.photoCounterText}>
+                                    {currentImage + 1} of {images.length}
+                                </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                                {images.map((_, idx) => (
+                                    <TouchableOpacity
+                                        key={idx}
+                                        onPress={() => setCurrentImage(idx)}
+                                        style={{
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: 5,
+                                            backgroundColor: idx === currentImage ? '#007AFF' : '#ccc',
+                                            marginHorizontal: 4,
+                                        }}
+                                    />
+                                ))}
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', position: 'absolute', top: '50%', width: '100%' }}>
+                                <TouchableOpacity
+                                    onPress={() => setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                                    style={{ padding: 16 }}
+                                >
+                                    <Text style={{ fontSize: 24, color: '#fff', backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 20 }}>‹</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                                    style={{ padding: 16 }}
+                                >
+                                    <Text style={{ fontSize: 24, color: '#fff', backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 20 }}>›</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </>
+                    ) : (
+                        <View style={styles.imagePlaceholder}>
+                            <Text style={styles.imageText}>🚗</Text>
+                        </View>
+                    )}
                 </View>
 
                 {/* Edit Listing Button */}
