@@ -4,6 +4,7 @@ import {
     Alert,
     Dimensions,
     Image,
+    Modal,
     SafeAreaView,
     ScrollView,
     StyleSheet,
@@ -65,8 +66,10 @@ const VehicleDetailsScreen = () => {
     const highestOffer = offers.length > 0 ? offers[0].amount : '$0';
     const spreadToBook = '92%';
 
+    const [offersModalVisible, setOffersModalVisible] = React.useState(false);
+
     const handleViewOffers = () => {
-        router.push({ pathname: '/RespondToOffersScreen', params: { vehicle: JSON.stringify(vehicleDetails), offers: JSON.stringify(offers) } });
+        setOffersModalVisible(true);
     };
 
     const handleEditListing = () => {
@@ -90,6 +93,55 @@ const VehicleDetailsScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            {/* Offers Modal */}
+            <Modal
+                visible={offersModalVisible}
+                animationType="slide"
+                transparent={true}
+                onRequestClose={() => setOffersModalVisible(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalHeader}>
+                            <Text style={styles.modalTitle}>{offersCount} Offer{offersCount !== 1 ? 's' : ''}</Text>
+                            <TouchableOpacity onPress={() => setOffersModalVisible(false)}>
+                                <Text style={styles.modalClose}>✕</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <ScrollView style={{ maxHeight: 400 }}>
+                            {offers.map((offer, idx) => (
+                                <View key={offer.id} style={styles.offerCard}>
+                                    <View style={styles.offerRow}>
+                                        <Text style={styles.offerAmount}>{offer.amount}</Text>
+                                    </View>
+                                    {offer.comment && (
+                                        <Text style={styles.offerComment}>{offer.comment}</Text>
+                                    )}
+                                    {offer.status === 'Declined' ? (
+                                        <View style={styles.declinedRow}>
+                                            <Text style={styles.declinedBadge}>Offer Declined</Text>
+                                        </View>
+                                    ) : (
+                                        <View style={styles.offerActionsRow}>
+                                            <TouchableOpacity style={styles.declineButton}>
+                                                <Text style={styles.declineButtonText}>Decline</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.counterButton}>
+                                                <Text style={styles.counterButtonText}>Counter</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )}
+                                    {offer.status !== 'Declined' && (
+                                        <TouchableOpacity style={styles.acceptButton}>
+                                            <Text style={styles.acceptButtonText}>Accept Offer</Text>
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
+                            ))}
+                        </ScrollView>
+                    </View>
+                </View>
+            </Modal>
             <ScrollView style={styles.scrollView}>
                 {/* Header */}
                 <View style={styles.headerContainer}>
@@ -515,6 +567,125 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         fontSize: 14,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 18,
+        width: '90%',
+        padding: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 5,
+    },
+    modalHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    modalClose: {
+        fontSize: 22,
+        color: '#888',
+        padding: 4,
+    },
+    offerCard: {
+        borderWidth: 1,
+        borderColor: '#eee',
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 16,
+        backgroundColor: '#fafbfc',
+    },
+    offerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 8,
+    },
+    offerAmount: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#222',
+    },
+    offerComment: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 10,
+    },
+    offerActionsRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+    },
+    declineButton: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: '#007AFF',
+        borderRadius: 8,
+        paddingVertical: 10,
+        marginRight: 8,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+    },
+    declineButtonText: {
+        color: '#007AFF',
+        fontWeight: '600',
+    },
+    counterButton: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: '#007AFF',
+        borderRadius: 8,
+        paddingVertical: 10,
+        marginLeft: 8,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+    },
+    counterButtonText: {
+        color: '#007AFF',
+        fontWeight: '600',
+    },
+    acceptButton: {
+        backgroundColor: '#007AFF',
+        borderRadius: 8,
+        paddingVertical: 12,
+        alignItems: 'center',
+        marginTop: 2,
+    },
+    acceptButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    declinedRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 8,
+        marginBottom: 2,
+    },
+    declinedBadge: {
+        color: '#b71c1c',
+        backgroundColor: '#fff3e0',
+        borderWidth: 1,
+        borderColor: '#b71c1c',
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        fontWeight: 'bold',
+        fontSize: 13,
     },
 });
 
