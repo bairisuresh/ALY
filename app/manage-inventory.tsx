@@ -1,6 +1,9 @@
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
   FlatList,
+  Modal,
+  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -10,11 +13,33 @@ import {
   View
 } from 'react-native';
 
-const ManageInventoryScreen = ({ navigation }) => {
-  const [searchText, setSearchText] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('Buy All');
+interface InventoryItem {
+  id: string;
+  year: string;
+  make: string;
+  model: string;
+  type: string;
+  fullVin: string;
+  partialVin: string;
+  price: string;
+  mmr: string;
+  offers: number;
+  mileage: string;
+  status: string;
+  color: string;
+  statusColor: string;
+  hasDescription: boolean;
+  description?: string;
+}
 
-  const inventoryData = [
+const ManageInventoryScreen = () => {
+  const router = useRouter();
+  const [searchText, setSearchText] = useState('');
+  const [activeFilter, setActiveFilter] = useState(false);
+  const [offersFilter, setOffersFilter] = useState(false);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+
+  const inventoryData: InventoryItem[] = [
     {
       id: '1',
       year: '2008',
@@ -68,93 +93,161 @@ const ManageInventoryScreen = ({ navigation }) => {
       statusColor: '#4CAF50',
       hasDescription: false,
     },
+    // New records
+    {
+      id: '4',
+      year: '2012',
+      make: 'Ford',
+      model: 'F-150 XLT',
+      type: 'Ford F-150',
+      fullVin: '1FTEW1CM6CFB12345',
+      partialVin: '1234FORDXLT',
+      price: '$21,500',
+      mmr: '$23,000',
+      offers: 0,
+      mileage: '42,000 mi',
+      status: 'Not Active',
+      color: '#FDECEA',
+      statusColor: '#F44336',
+      hasDescription: false,
+    },
+    {
+      id: '5',
+      year: '2015',
+      make: 'Toyota',
+      model: 'Camry SE',
+      type: 'Toyota Camry',
+      fullVin: '4T1BF1FK5FU123456',
+      partialVin: '4567TOYCAM',
+      price: '$17,800',
+      mmr: '$19,500',
+      offers: 2,
+      mileage: '28,000 mi',
+      status: 'Active',
+      color: '#E8F5E8',
+      statusColor: '#4CAF50',
+      hasDescription: true,
+      description: 'Low mileage, single owner, well maintained.',
+    },
+    {
+      id: '6',
+      year: '2017',
+      make: 'Honda',
+      model: 'Civic LX',
+      type: 'Honda Civic',
+      fullVin: '2HGFC2F59HH123456',
+      partialVin: 'CIVIC2017LX',
+      price: '$15,900',
+      mmr: '$17,200',
+      offers: 0,
+      mileage: '31,000 mi',
+      status: 'Not Active',
+      color: '#FDECEA',
+      statusColor: '#F44336',
+      hasDescription: false,
+    },
+    {
+      id: '7',
+      year: '2020',
+      make: 'Tesla',
+      model: 'Model 3',
+      type: 'Tesla Model 3',
+      fullVin: '5YJ3E1EA7LF123456',
+      partialVin: 'TESLA2020M3',
+      price: '$35,000',
+      mmr: '$36,500',
+      offers: 3,
+      mileage: '12,000 mi',
+      status: 'Active',
+      color: '#E8F5E8',
+      statusColor: '#4CAF50',
+      hasDescription: true,
+      description: 'Like new, autopilot included.',
+    },
+    {
+      id: '8',
+      year: '2018',
+      make: 'BMW',
+      model: 'X5',
+      type: 'BMW X5',
+      fullVin: '5UXKR0C59J0X12345',
+      partialVin: 'BMWX52018',
+      price: '$29,900',
+      mmr: '$31,000',
+      offers: 1,
+      mileage: '22,000 mi',
+      status: 'Not Active',
+      color: '#FDECEA',
+      statusColor: '#F44336',
+      hasDescription: false,
+    },
   ];
 
-  const filters = ['Buy All', 'Toyota', 'Lexus', 'Nissan/Infiniti'];
-
-  // Filter inventory by searchText
   const filteredInventory = inventoryData.filter(item => {
     const query = searchText.toLowerCase();
-    return (
-      item.fullVin.toLowerCase().includes(query) ||
-      item.partialVin.toLowerCase().includes(query)
-    );
+    const matchesSearch = item.fullVin.toLowerCase().includes(query) || item.partialVin.toLowerCase().includes(query);
+    const matchesActive = !activeFilter || item.status === 'Active';
+    // Only show offers > 1 if offersFilter is true
+    const matchesOffers = !offersFilter || item.offers > 1;
+    return matchesSearch && matchesActive && matchesOffers;
   });
 
-  const resultsCount = filteredInventory.length;
-
-  const handleItemPress = item => {
-    navigation.navigate('VehicleDetails', { vehicle: item });
+  const handleItemPress = (item: InventoryItem) => {
+    router.push({ pathname: '/vehicle/[id]', params: { id: item.id, vehicle: JSON.stringify(item) } });
   };
-
-  const renderVehicleItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.vehicleCard}
-      onPress={() => handleItemPress(item)}
-    >
-      <Text style={styles.cardTitle}>
-        {`${item.year} ${item.make} ${item.model}`}
-      </Text>
-      <Text style={styles.cardVin}>
-        {`${item.fullVin} • ${item.partialVin} • `}
-        <Text style={styles.warningIcon}>⚠️</Text>
-      </Text>
-      <View style={styles.cardRow}>
-        <Text style={styles.cardLabel}>Odometer</Text>
-        <Text style={styles.cardValue}>{item.mileage}</Text>
-      </View>
-      <View style={styles.cardRow}>
-        <View style={styles.offerContainer}>
-          <Text style={styles.cardLabel}>Best Offer</Text>
-          <View style={styles.offerBadge}>
-            <Text style={styles.offerBadgeText}>{item.offers}</Text>
-          </View>
-        </View>
-        <Text style={styles.cardValue}>{item.price}</Text>
-      </View>
-      <View style={styles.cardFooter}>
-        <View style={[styles.statusBadge, { backgroundColor: item.statusColor }]}>
-          <Text style={styles.statusText}>{item.status}</Text>
-        </View>
-        <View style={styles.footerIcons}>
-          <Text style={styles.iconText}>👁️ 34</Text>
-          <Text style={styles.iconText}> ❤️ 2</Text>
-        </View>
-      </View>
-      {item.hasDescription && (
-        <Text style={styles.cardDescription}>{item.description}</Text>
-      )}
-    </TouchableOpacity>
-  );
-
-  const renderFilterButton = filter => (
-    <TouchableOpacity
-      key={filter}
-      style={[
-        styles.filterButton,
-        selectedFilter === filter && styles.selectedFilterButton,
-      ]}
-      onPress={() => setSelectedFilter(filter)}
-    >
-      <Text
-        style={[
-          styles.filterText,
-          selectedFilter === filter && styles.selectedFilterText,
-        ]}
-      >
-        {filter}
-      </Text>
-    </TouchableOpacity>
-  );
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Manage Inventory</Text>
-        <TouchableOpacity style={styles.filterIcon}>
+        <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
           <Text style={styles.iconText}>≡</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Filter Modal */}
+      <Modal
+        visible={filterModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setFilterModalVisible(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.2)', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ backgroundColor: '#fff', borderRadius: 12, padding: 24, minWidth: 220 }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 16 }}>Filter By</Text>
+            <Pressable
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
+              onPress={() => {
+                setActiveFilter(!activeFilter);
+              }}
+            >
+              <View style={{
+                width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: '#007AFF', marginRight: 10,
+                backgroundColor: activeFilter ? '#007AFF' : '#fff',
+              }} />
+              <Text style={{ fontSize: 16 }}>Active</Text>
+            </Pressable>
+            <Pressable
+              style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
+              onPress={() => {
+                setOffersFilter(!offersFilter);
+              }}
+            >
+              <View style={{
+                width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: '#007AFF', marginRight: 10,
+                backgroundColor: offersFilter ? '#007AFF' : '#fff',
+              }} />
+              <Text style={{ fontSize: 16 }}>Offers</Text>
+            </Pressable>
+            <TouchableOpacity
+              style={{ marginTop: 8, alignSelf: 'flex-end' }}
+              onPress={() => setFilterModalVisible(false)}
+            >
+              <Text style={{ color: '#007AFF', fontWeight: 'bold' }}>Done</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       <View style={styles.searchContainer}>
         <View style={styles.searchBox}>
@@ -175,32 +268,80 @@ const ManageInventoryScreen = ({ navigation }) => {
             style={styles.clearChip}
             onPress={() => {
               setSearchText('');
-              setSelectedFilter('Buy All');
+              setActiveFilter(false);
+              setOffersFilter(false);
             }}
           >
             <Text style={styles.clearChipText}>Clear All</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.chip}>
-            <Text style={styles.chipText}>Active</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.chip}>
-            <Text style={styles.chipText}>Offers</Text>
-          </TouchableOpacity>
+
+          {/* Show Active filter chip only if activeFilter is true */}
+          {activeFilter && (
+            <TouchableOpacity
+              style={[styles.chip, styles.chipSelected]}
+              onPress={() => setActiveFilter(false)}
+            >
+              <Text style={styles.chipTextSelected}>Active ✕</Text>
+            </TouchableOpacity>
+          )}
+
+          {/* Show Offers filter chip only if offersFilter is true */}
+          {offersFilter && (
+            <TouchableOpacity
+              style={[styles.chip, styles.chipSelected]}
+              onPress={() => setOffersFilter(false)}
+            >
+              <Text style={styles.chipTextSelected}>Offers ✕</Text>
+            </TouchableOpacity>
+          )}
         </ScrollView>
       </View>
 
       <View style={styles.resultsHeader}>
-        <Text style={styles.resultsText}>{resultsCount} results</Text>
-        <TouchableOpacity style={styles.sortContainer}>
+        <Text style={styles.resultsText}>{filteredInventory.length} results</Text>
+        <View style={styles.sortContainer}>
           <Text style={styles.sortIconMain}>≡</Text>
           <Text style={styles.sortText}>VIN</Text>
           <Text style={styles.sortChevron}>▼</Text>
-        </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
         data={filteredInventory}
-        renderItem={renderVehicleItem}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.vehicleCard}
+            onPress={() => handleItemPress(item)}
+          >
+            <Text style={styles.cardTitle}>{`${item.year} ${item.make} ${item.model}`}</Text>
+            <Text style={styles.cardVin}>{`${item.fullVin} • ${item.partialVin} • `}<Text style={styles.warningIcon}>⚠️</Text></Text>
+            <View style={styles.cardRow}>
+              <Text style={styles.cardLabel}>Odometer</Text>
+              <Text style={styles.cardValue}>{item.mileage}</Text>
+            </View>
+            <View style={styles.cardRow}>
+              <View style={styles.offerContainer}>
+                <Text style={styles.cardLabel}>Best Offer</Text>
+                <View style={styles.offerBadge}>
+                  <Text style={styles.offerBadgeText}>{item.offers}</Text>
+                </View>
+              </View>
+              <Text style={styles.cardValue}>{item.price}</Text>
+            </View>
+            <View style={styles.cardFooter}>
+              <View style={[styles.statusBadge, { backgroundColor: item.statusColor }]}>
+                <Text style={styles.statusText}>{item.status}</Text>
+              </View>
+              <View style={styles.footerIcons}>
+                <Text style={[styles.iconText, { color: '#B0B0B0' }]}>👁️ 34</Text>
+                <Text style={[styles.iconText, { color: '#B0B0B0' }]}>❤️ 2</Text>
+              </View>
+            </View>
+            {item.hasDescription && (
+              <Text style={styles.cardDescription}>{item.description}</Text>
+            )}
+          </TouchableOpacity>
+        )}
         keyExtractor={item => item.id}
         style={styles.list}
         showsVerticalScrollIndicator={false}
@@ -286,10 +427,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#E1EEFF',
     marginRight: 8,
   },
+  chipSelected: {
+    backgroundColor: '#007AFF',
+  },
   chipText: {
     color: '#007AFF',
     fontSize: 14,
     fontWeight: '500',
+  },
+  chipTextSelected: {
+    color: '#fff',
   },
   resultsHeader: {
     flexDirection: 'row',
@@ -310,8 +457,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E0E0E0',
     borderRadius: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     paddingVertical: 6,
+    minWidth: 120,
+    justifyContent: 'space-between',
   },
   sortText: {
     fontSize: 14,
