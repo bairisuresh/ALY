@@ -30,6 +30,8 @@ interface InventoryItem {
   statusColor: string;
   hasDescription: boolean;
   description?: string;
+  views?: number;
+  likes?: number;
 }
 
 const ManageInventoryScreen = () => {
@@ -38,8 +40,10 @@ const ManageInventoryScreen = () => {
   const [activeFilter, setActiveFilter] = useState(false);
   const [offersFilter, setOffersFilter] = useState(false);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [dummyState, setDummyState] = useState(false); // for force re-render
 
-  const inventoryData: InventoryItem[] = [
+  // Move inventoryData to state so updates trigger re-render
+  const [inventory, setInventory] = useState<InventoryItem[]>([
     {
       id: '1',
       year: '2008',
@@ -56,6 +60,8 @@ const ManageInventoryScreen = () => {
       color: '#E8F5E8',
       statusColor: '#4CAF50',
       hasDescription: false,
+      views: 34,
+      likes: 2,
     },
     {
       id: '2',
@@ -75,6 +81,8 @@ const ManageInventoryScreen = () => {
       hasDescription: true,
       description:
         'Great value, will need minor body work for the scratch and dent repair. Will bid at auction. Need to lookup VIN for future title issues and accidents.',
+      views: 34,
+      likes: 2,
     },
     {
       id: '3',
@@ -92,8 +100,9 @@ const ManageInventoryScreen = () => {
       color: '#E8F5E8',
       statusColor: '#4CAF50',
       hasDescription: false,
+      views: 34,
+      likes: 2,
     },
-    // New records
     {
       id: '4',
       year: '2012',
@@ -110,6 +119,8 @@ const ManageInventoryScreen = () => {
       color: '#FDECEA',
       statusColor: '#F44336',
       hasDescription: false,
+      views: 34,
+      likes: 2,
     },
     {
       id: '5',
@@ -128,6 +139,8 @@ const ManageInventoryScreen = () => {
       statusColor: '#4CAF50',
       hasDescription: true,
       description: 'Low mileage, single owner, well maintained.',
+      views: 34,
+      likes: 2,
     },
     {
       id: '6',
@@ -145,6 +158,8 @@ const ManageInventoryScreen = () => {
       color: '#FDECEA',
       statusColor: '#F44336',
       hasDescription: false,
+      views: 34,
+      likes: 2,
     },
     {
       id: '7',
@@ -163,6 +178,8 @@ const ManageInventoryScreen = () => {
       statusColor: '#4CAF50',
       hasDescription: true,
       description: 'Like new, autopilot included.',
+      views: 34,
+      likes: 2,
     },
     {
       id: '8',
@@ -180,14 +197,15 @@ const ManageInventoryScreen = () => {
       color: '#FDECEA',
       statusColor: '#F44336',
       hasDescription: false,
+      views: 34,
+      likes: 2,
     },
-  ];
+  ]);
 
-  const filteredInventory = inventoryData.filter(item => {
+  const filteredInventory = inventory.filter(item => {
     const query = searchText.toLowerCase();
     const matchesSearch = item.fullVin.toLowerCase().includes(query) || item.partialVin.toLowerCase().includes(query);
     const matchesActive = !activeFilter || item.status === 'Active';
-    // Only show offers > 1 if offersFilter is true
     const matchesOffers = !offersFilter || item.offers > 1;
     return matchesSearch && matchesActive && matchesOffers;
   });
@@ -333,8 +351,16 @@ const ManageInventoryScreen = () => {
                 <Text style={styles.statusText}>{item.status}</Text>
               </View>
               <View style={styles.footerIcons}>
-                <Text style={[styles.iconText, { color: '#B0B0B0' }]}>👁️ 34</Text>
-                <Text style={[styles.iconText, { color: '#B0B0B0' }]}>❤️ 2</Text>
+                <TouchableOpacity onPress={() => {
+                  setInventory(prev => prev.map(i => i.id === item.id ? { ...i, views: (i.views || 0) + 1 } : i));
+                }}>
+                  <Text style={[styles.iconText, { color: '#B0B0B0' }]}>👁️ {item.views || 34}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                  setInventory(prev => prev.map(i => i.id === item.id ? { ...i, likes: (i.likes || 2) + 1 } : i));
+                }}>
+                  <Text style={[styles.iconText, { color: '#B0B0B0' }]}>❤️ {item.likes || 2}</Text>
+                </TouchableOpacity>
               </View>
             </View>
             {item.hasDescription && (
