@@ -33,6 +33,8 @@ interface InventoryItem {
   views?: number;
   likes?: number;
   images: string[];
+  features?: string[];
+  sellerComments?: string;
 }
 
 const ManageInventoryScreen = () => {
@@ -61,14 +63,14 @@ const ManageInventoryScreen = () => {
       color: '#E8F5E8',
       statusColor: '#4CAF50',
       hasDescription: false,
+      features: ['4 Door Cab', 'Extended', 'Quad RWD'],
+      sellerComments: 'Single owner, no accidents, Carfax avail.',
       views: 34,
       likes: 2,
       images: [
-        'https://source.unsplash.com/featured/?chevrolet,silverado,front',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,side',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,back',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,interior',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,engine',
+        'https://images.unsplash.com/photo-1580273916550-e323be2ae537',
+        'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e',
       ],
     },
     {
@@ -87,16 +89,16 @@ const ManageInventoryScreen = () => {
       color: '#E8F5E8',
       statusColor: '#4CAF50',
       hasDescription: true,
+      features: ['Crew Cab', '4WD', 'Bluetooth'],
+      sellerComments: 'Great value, will need minor body work for the scratch and dent repair.',
       description:
         'Great value, will need minor body work for the scratch and dent repair. Will bid at auction. Need to lookup VIN for future title issues and accidents.',
       views: 34,
       likes: 2,
       images: [
-        'https://source.unsplash.com/featured/?chevrolet,silverado,front',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,side',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,back',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,interior',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,engine',
+        'https://images.unsplash.com/photo-1580273916550-e323be2ae537',
+        'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e',
       ],
     },
     {
@@ -115,14 +117,14 @@ const ManageInventoryScreen = () => {
       color: '#E8F5E8',
       statusColor: '#4CAF50',
       hasDescription: false,
+      features: ['Extended Cab', 'Tow Package'],
+      sellerComments: 'Reliable work truck, ready for heavy duty.',
       views: 34,
       likes: 2,
       images: [
-        'https://source.unsplash.com/featured/?chevrolet,silverado,front',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,side',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,back',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,interior',
-        'https://source.unsplash.com/featured/?chevrolet,silverado,engine',
+        'https://images.unsplash.com/photo-1580273916550-e323be2ae537',
+        'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e',
       ],
     },
     {
@@ -141,14 +143,14 @@ const ManageInventoryScreen = () => {
       color: '#FDECEA',
       statusColor: '#F44336',
       hasDescription: false,
+      features: ['4WD', 'Navigation', 'Backup Camera'],
+      sellerComments: 'Fleet maintained, clean interior.',
       views: 34,
       likes: 2,
       images: [
-        'https://source.unsplash.com/featured/?ford,f150,front',
-        'https://source.unsplash.com/featured/?ford,f150,side',
-        'https://source.unsplash.com/featured/?ford,f150,back',
-        'https://source.unsplash.com/featured/?ford,f150,interior',
-        'https://source.unsplash.com/featured/?ford,f150,engine',
+        'https://images.unsplash.com/photo-1580273916550-e323be2ae537',
+        'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e',
       ],
     },
     {
@@ -167,15 +169,15 @@ const ManageInventoryScreen = () => {
       color: '#E8F5E8',
       statusColor: '#4CAF50',
       hasDescription: true,
+      features: ['Bluetooth', 'Backup Camera', 'Heated Seats'],
+      sellerComments: 'Low mileage, single owner, well maintained.',
       description: 'Low mileage, single owner, well maintained.',
       views: 34,
       likes: 2,
       images: [
-        'https://source.unsplash.com/featured/?toyota,camry,front',
-        'https://source.unsplash.com/featured/?toyota,camry,side',
-        'https://source.unsplash.com/featured/?toyota,camry,back',
-        'https://source.unsplash.com/featured/?toyota,camry,interior',
-        'https://source.unsplash.com/featured/?toyota,camry,engine',
+        'https://images.unsplash.com/photo-1580273916550-e323be2ae537',
+        'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e',
       ],
     },
     {
@@ -194,14 +196,14 @@ const ManageInventoryScreen = () => {
       color: '#FDECEA',
       statusColor: '#F44336',
       hasDescription: false,
+      features: ['Bluetooth', 'Cruise Control'],
+      sellerComments: 'Fuel efficient, great for city driving.',
       views: 34,
       likes: 2,
       images: [
-        'https://source.unsplash.com/featured/?honda,civic,front',
-        'https://source.unsplash.com/featured/?honda,civic,side',
-        'https://source.unsplash.com/featured/?honda,civic,back',
-        'https://source.unsplash.com/featured/?honda,civic,interior',
-        'https://source.unsplash.com/featured/?honda,civic,engine',
+        'https://images.unsplash.com/photo-1580273916550-e323be2ae537',
+        'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e',
       ],
     },
     {
@@ -220,15 +222,15 @@ const ManageInventoryScreen = () => {
       color: '#E8F5E8',
       statusColor: '#4CAF50',
       hasDescription: true,
+      features: ['Autopilot', 'Electric', 'Heated Seats'],
+      sellerComments: 'Like new, autopilot included.',
       description: 'Like new, autopilot included.',
       views: 34,
       likes: 2,
       images: [
-        'https://source.unsplash.com/featured/?tesla,model3,front',
-        'https://source.unsplash.com/featured/?tesla,model3,side',
-        'https://source.unsplash.com/featured/?tesla,model3,back',
-        'https://source.unsplash.com/featured/?tesla,model3,interior',
-        'https://source.unsplash.com/featured/?tesla,model3,engine',
+        'https://images.unsplash.com/photo-1580273916550-e323be2ae537',
+        'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e',
       ],
     },
     {
@@ -247,14 +249,14 @@ const ManageInventoryScreen = () => {
       color: '#FDECEA',
       statusColor: '#F44336',
       hasDescription: false,
+      features: ['AWD', 'Leather Seats', 'Sunroof'],
+      sellerComments: 'Luxury SUV, well equipped.',
       views: 34,
       likes: 2,
       images: [
-        'https://source.unsplash.com/featured/?bmw,x5,front',
-        'https://source.unsplash.com/featured/?bmw,x5,side',
-        'https://source.unsplash.com/featured/?bmw,x5,back',
-        'https://source.unsplash.com/featured/?bmw,x5,interior',
-        'https://source.unsplash.com/featured/?bmw,x5,engine',
+        'https://images.unsplash.com/photo-1580273916550-e323be2ae537',
+        'https://images.unsplash.com/photo-1502877338535-766e1452684a',
+        'https://images.unsplash.com/photo-1555215695-3004980ad54e',
       ],
     },
   ]);

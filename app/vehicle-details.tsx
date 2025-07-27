@@ -49,14 +49,17 @@ const VehicleDetailsScreen = () => {
     const features = Array.isArray(vehicleDetails.features) ? vehicleDetails.features : [];
 
     let offers;
+    let offersCount = 0;
     if (params.offers) {
         const offersParam = Array.isArray(params.offers) ? params.offers[0] : params.offers;
         offers = JSON.parse(offersParam);
+        offersCount = Array.isArray(offers) ? offers.length : 0;
     } else {
         offers = [
             { id: 1, amount: '$19,200', dealer: 'Premier Auto', status: 'Pending' },
             { id: 2, amount: '$18,500', dealer: 'City Motors', status: 'Declined' },
         ];
+        offersCount = offers.length;
     }
 
     const highestOffer = offers.length > 0 ? offers[0].amount : '$0';
@@ -188,8 +191,8 @@ const VehicleDetailsScreen = () => {
                 <View style={styles.offersSection}>
                     <View style={styles.offersSectionHeader}>
                         <Text style={styles.offersTitle}>Offers</Text>
-                        <View style={styles.offersIcon}>
-                            <Text style={styles.offersIconText}>?</Text>
+                        <View style={styles.offerBadge}>
+                            <Text style={styles.offerBadgeText}>{offersCount}</Text>
                         </View>
                     </View>
 
@@ -201,9 +204,9 @@ const VehicleDetailsScreen = () => {
                         <View style={styles.offersRow}>
                             <View style={styles.spreadContainer}>
                                 <Text style={styles.offersLabel}>📖 Spread To Book</Text>
-                                <View style={styles.infoIcon}>
-                                    <Text style={styles.infoIconText}>ℹ️</Text>
-                                </View>
+                                <View style={styles.offersIcon}>
+                            <Text style={styles.offersIconText}>?</Text>
+                        </View>
                             </View>
                             <Text style={styles.offersValue}>{spreadToBook}</Text>
                         </View>
@@ -497,6 +500,21 @@ const styles = StyleSheet.create({
     vinText: {
         fontSize: 16,
         color: '#333',
+    },
+    offerBadge: {
+        backgroundColor: '#007AFF',
+        borderRadius: 10,
+        minWidth: 24,
+        height: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 6,
+        marginLeft: 4,
+    },
+    offerBadgeText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 14,
     },
 });
 
