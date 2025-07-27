@@ -211,7 +211,7 @@ const ManageInventoryScreen = () => {
   });
 
   const handleItemPress = (item: InventoryItem) => {
-    router.push({ pathname: '/vehicle/[id]', params: { id: item.id, vehicle: JSON.stringify(item) } });
+    router.push({ pathname: '/vehicle-details', params: { id: item.id, vehicle: JSON.stringify(item) } });
   };
 
   return (
